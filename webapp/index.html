@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="author" content="Łukasz Holeczek">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>Management Dashboard</title>
+    <!-- Icons-->
+    <!--<link href="node_modules/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">-->
+    <!--<link href="node_modules/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">-->
+    <!--<link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">-->
+    <!--<link href="node_modules/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">-->
+    <!-- Main styles for this application-->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/chart.css" rel="stylesheet">
+    <link href="css/icon.css" rel="stylesheet">
+    <link href="vendors/pace-progress/css/pace.min.css" rel="stylesheet">
+    <!-- Jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics-->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        // Shared ID
+        gtag('config', 'UA-118965717-3');
+        // Bootstrap ID
+        gtag('config', 'UA-118965717-5');
+    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		function onClickLevel1() {
+			var a = document.getElementById("level1");
+			var b = document.getElementById("level2");
+			var c = document.getElementById("level3");
+			a.className = "btn btn-outline-secondary active";
+			b.className = "btn btn-outline-secondary";
+			c.className = "btn btn-outline-secondary";
+            document.getElementById("level1heatmap").className = "";
+        	document.getElementById("level2heatmap").className = "hidden";
+        	document.getElementById("level3heatmap").className = "hidden";
+		}
+		
+		function onClickLevel2() {
+			var a = document.getElementById("level1");
+			var b = document.getElementById("level2");
+			var c = document.getElementById("level3");
+			a.className = "btn btn-outline-secondary";
+			b.className = "btn btn-outline-secondary active";
+			c.className = "btn btn-outline-secondary";
+            document.getElementById("level1heatmap").className = "hidden";
+        	document.getElementById("level2heatmap").className = "";
+        	document.getElementById("level3heatmap").className = "hidden";
+		}
+		
+		function onClickLevel3() {
+			var a = document.getElementById("level1");
+			var b = document.getElementById("level2");
+			var c = document.getElementById("level3");
+			a.className = "btn btn-outline-secondary";
+			b.className = "btn btn-outline-secondary";
+			c.className = "btn btn-outline-secondary active";
+            document.getElementById("level1heatmap").className = "hidden";
+        	document.getElementById("level2heatmap").className = "hidden";
+        	document.getElementById("level3heatmap").className = "";
+		}
+	</script>
+</head>
+
+<body class="app header-fixed" onload=onClickLevel1()>
+    <header class="app-header navbar">
+        <a class="navbar-brand" href="#">
+            <img class="navbar-brand-full" src="img/brand/toiletLogo.jpg" height="50" alt="CoreUI Logo">
+            <img class="navbar-brand-minimized" src="img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
+        </a>
+    </header>
+
+    <div class="app-body">
+        <main class="main">
+            <!-- Breadcrumb-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" >D'Resort</li>
+                <!-- Breadcrumb Menu-->
+                <li class="breadcrumb-menu d-md-down-none">
+                    <div class="btn-group" role="group" aria-label="Button group">
+                        <!--<a class="btn" href="#">-->
+                        <!--    <i class="icon-speech"></i>-->
+                        <!--</a>-->
+                        <!--<a class="btn" href="#">-->
+                        <!--    <i class="icon-graph"></i> Search</a>-->
+                        <!--<a class="btn" href="#">-->
+                        <!--    <i class="icon-settings"></i>  Settings</a>-->
+                    </div>
+                </li>
+            </ol>
+
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <!--<div class="row">-->
+
+                    <!--    <div class="col-sm-6 col-lg-3">-->
+                    <!--        <div class="card text-white bg-success" style="padding-bottom:20px;">-->
+                    <!--            <div class="card-body pb-0">-->
+                    <!--                <div class="text-value">15 Toilets</div>-->
+                    <!--                <div>Clean</div>-->
+                    <!--            </div>-->
+                    <!--        </div>-->
+                    <!--    </div>-->
+                        <!-- /.col-->
+                    <!--    <div class="col-sm-6 col-lg-3">-->
+                    <!--        <div class="card text-white bg-warning" style="padding-bottom:20px;">-->
+                    <!--            <div class="card-body pb-0">-->
+                    <!--                <div class="text-value">2 Toilets</div>-->
+                    <!--                <div>Under Maintenance</div>-->
+                    <!--            </div>-->
+                    <!--        </div>-->
+                    <!--    </div>-->
+                        <!-- /.col-->
+                    <!--    <div class="col-sm-6 col-lg-3">-->
+                    <!--        <div class="card text-white bg-danger" style="padding-bottom:20px;">-->
+                    <!--            <div class="card-body pb-0">-->
+                    <!--                <div class="text-value">3 Toilets</div>-->
+                    <!--                <div>Dirty</div>-->
+                    <!--            </div>-->
+                    <!--        </div>-->
+                    <!--    </div>-->
+                        <!-- /.col-->
+                    <!--    <div class="col-sm-6 col-lg-3">-->
+                    <!--        <div class="card text-white bg-primary" style="padding-bottom:20px;">-->
+                    <!--            <div class="card-body pb-0">-->
+                    <!--                <div class="text-value">3 Cleaners</div>-->
+                    <!--                <div>On Duty Today</div>-->
+                    <!--            </div>-->
+                                <!--<div class="chart-wrapper mt-3" style="height:70px;">-->
+                                <!--    <canvas class="chart" id="card-chart3" height="70"></canvas>-->
+                                <!--</div>-->
+                    <!--        </div>-->
+                    <!--    </div>-->
+                        <!-- /.col-->
+                    <!--</div>-->
+                    <!-- /.row-->
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h3 class="card-title mb-1" style="padding-top:20px; padding-left:20px;">Resort Heatmap</h3>
+                                </div>
+
+                                <!-- /.col-->
+                                <div class="col-sm-1 d-none d-md-block" style="padding-top:20px">
+                                    <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
+                                        <label id="level1" class="btn btn-outline-secondary active" onClick="onClickLevel1()">
+                                            <input id="option1" type="radio" name="options" autocomplete="off">
+                                            Level 1
+                                        </label>
+                                        <label id="level2" class="btn btn-outline-secondary" onClick="onClickLevel2()">
+                                            <input id="option2" type="radio" name="options" autocomplete="off">
+                                            Level 2
+                                        </label>
+                                        <label id="level3" class="btn btn-outline-secondary" onClick="onClickLevel3()">
+                                            <input id="option3" type="radio" name="options" autocomplete="off">
+                                            Level 3
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- /.col-->
+                            </div>
+                            <!-- /.row-->
+                            <h3><center>Noise Levels in Real-time </center></h3>
+                            	<div align="center" style="padding-top:30px; padding-bottom:30px;">
+                            		<div id="level1heatmap">
+                            			<div id="Lvl1_The_Arena_1" class="flashit l1_boxing_ring hidden">
+                            				<img src='img/overlay/Lvl1_The_Arena_1.png' height='600'>
+                            			</div>
+                            			<div id="Lvl1_The_Arena_2" class="flashit l1_boxing_ring hidden">
+                            				<img src='img/overlay/Lvl1_The_Arena_2.png' height='600'>
+                        				</div>
+                        				<div id="Lvl1_The_Arena_3" class="flashit l1_boxing_ring hidden">
+                            				<img src='img/overlay/Lvl1_The_Arena_3.png' height='600'>
+                            			</div>
+                            			<img src='img/L1.png' height='600'>
+                            		</div>
+				                	<div id="level2heatmap" class="hidden">
+                            			<img src='img/L2.png' height='600'>
+                            		</div>
+                            		<div id="level3heatmap" class="hidden">
+                            			<img src='img/L3.png' height='600'>
+                            			<div id="Lvl3_Discussion_Room_1" class="flashit l3_discussion_zone hidden">
+                            				<img src='img/overlay/Lvl3_Discussion_Room_1.png' height='600'>
+                            			</div>
+                            			<div id="Lvl3_Discussion_Room_2" class="flashit l3_discussion_zone hidden">
+                            				<img src='img/overlay/Lvl3_Discussion_Room_2.png' height='600'>
+                            			</div>
+                            			<div id="Lvl3_Discussion_Room_3" class="flashit l3_discussion_zone hidden">
+                            				<img src='img/overlay/Lvl3_Discussion_Room_3.png' height='600'>
+                            			</div>
+                            			<div id="Lvl3_Social_Kitchen_1" class="flashit l3_social_kitchen2 hidden">
+                            				<img src='img/overlay/Lvl3_Social_Kitchen_1.png' height='600'>
+                            			</div>
+                            			<div id="Lvl3_Social_Kitchen_2" class="flashit l3_social_kitchen2 hidden">
+                            				<img src='img/overlay/Lvl3_Social_Kitchen_2.png' height='600'>
+                            			</div>
+                            			<div id="Lvl3_Social_Kitchen_3" class="flashit l3_social_kitchen2 hidden">
+                            				<img src='img/overlay/Lvl3_Social_Kitchen_3.png' height='600'>
+                            			</div>
+                            		</div>
+		                        </div>
+                        </div>
+                    </div>
+                </div>
+    		</div>
+    		
+    <footer class="app-footer">
+        <div>
+            <a href="https://coreui.io">CoreUI</a>
+            <span>&copy; 2018 creativeLabs.</span>
+        </div>
+        <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="https://coreui.io">CoreUI</a>
+        </div>
+    </footer>
+    <!-- CoreUI and necessary plugins-->
+    <!--<script src="node_modules/jquery/dist/jquery.min.js"></script>-->
+    <!--<script src="node_modules/popper.js/dist/umd/popper.min.js"></script>-->
+    <!--<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>-->
+    <!--<script src="node_modules/pace-progress/pace.min.js"></script>-->
+    <!--<script src="node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>-->
+    <!--<script src="node_modules/@coreui/coreui/dist/js/coreui.min.js"></script>-->
+    <!-- Plugins and scripts required by this view-->
+    <!--<script src="node_modules/chart.js/dist/Chart.min.js"></script>-->
+    <!--<script src="node_modules/@coreui/coreui-plugin-chartjs-custom-tooltips/dist/js/custom-tooltips.min.js"></script>-->
+    <!--<script src="js/main.js"></script>-->
+	<script src="js/noise.js"></script>
+</body>
+</html>>

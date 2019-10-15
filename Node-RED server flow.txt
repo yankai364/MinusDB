@@ -1,0 +1,401 @@
+[
+    {
+        "id": "6f42e3c6.0f795c",
+        "type": "tab",
+        "label": "Server",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "73c48b30.466cd4",
+        "type": "mqtt in",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "topic": "is439/4/noise",
+        "qos": "2",
+        "broker": "e1ddbcdf.35314",
+        "x": 110,
+        "y": 180,
+        "wires": [
+            [
+                "9f1ad241.48ab5"
+            ]
+        ]
+    },
+    {
+        "id": "9f1ad241.48ab5",
+        "type": "json",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 310,
+        "y": 180,
+        "wires": [
+            [
+                "d66f3aea.52c678",
+                "48729707.b21308"
+            ]
+        ]
+    },
+    {
+        "id": "aba3712f.80b95",
+        "type": "inject",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0",
+        "x": 110,
+        "y": 60,
+        "wires": [
+            [
+                "5c11b18.18ff35"
+            ]
+        ]
+    },
+    {
+        "id": "5c11b18.18ff35",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Connect to DB",
+        "func": "msg.topic = \"ATTACH DATABASE 'noise_db' as 'noise_db'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 340,
+        "y": 60,
+        "wires": [
+            [
+                "9830ebda.868068"
+            ]
+        ]
+    },
+    {
+        "id": "d66f3aea.52c678",
+        "type": "firebase out",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "ref": "noise_realtime",
+        "operation": "push",
+        "admin": "88eb0768.e5a8c8",
+        "x": 520,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dc1fa3be.b3613",
+        "type": "firebase in",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "ref": "threshold",
+        "dataAtStart": true,
+        "admin": "88eb0768.e5a8c8",
+        "x": 100,
+        "y": 120,
+        "wires": [
+            [
+                "21e20cf2.12c7d4"
+            ]
+        ]
+    },
+    {
+        "id": "21e20cf2.12c7d4",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Set thresholds to flow variables",
+        "func": "flow.set(\"morning\", msg.payload.morning);\nflow.set(\"afternoon\", msg.payload.afternoon);\nflow.set(\"evening\", msg.payload.evening);\nflow.set(\"midnight\", msg.payload.midnight);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9830ebda.868068",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Initialise flow variables",
+        "func": "flow.set(\"current_tier\", 0);",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 600,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8a22d6cb.5c3f08",
+        "type": "switch",
+        "z": "6f42e3c6.0f795c",
+        "name": "Check if payload empty",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "\"\"",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 670,
+        "y": 320,
+        "wires": [
+            [
+                "cf8d031.96298",
+                "c466ed76.3f86a",
+                "6c14d73c.1c1cc8"
+            ]
+        ]
+    },
+    {
+        "id": "cf8d031.96298",
+        "type": "mqtt out",
+        "z": "6f42e3c6.0f795c",
+        "name": "Send action",
+        "topic": "is439/4/action",
+        "qos": "2",
+        "retain": "",
+        "broker": "288044f2.b261fc",
+        "x": 930,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "f8382159.354bd",
+        "type": "telegram sender",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "bot": "c0b3a7bd.c980c8",
+        "x": 690,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f2ca0c67.93631",
+        "type": "telegram receiver",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "bot": "c0b3a7bd.c980c8",
+        "saveDataDir": "",
+        "x": 130,
+        "y": 480,
+        "wires": [
+            [
+                "9784b344.9f4e9",
+                "b8bd52d3.88127"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "9784b344.9f4e9",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Update chatID and send tier menu",
+        "func": "node.warn(msg);\n\nflow.set(\"chat\", msg.payload.chatId)\n\ncontext.global.keyboard = { pending : true };\n\nvar opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        keyboard: [\n            ['Tier 1'],\n            ['Tier 2'],\n            ['Tier 3']],\n            'resize_keyboard' : true,\n            'one_time_keyboard' : true\n    })\n};\n\nif (msg.payload.content === \"Tier 1\" || msg.payload.content === \"Tier 2\" || msg.payload.content === \"Tier 3\") {\n    msg.payload.content = \"Searching for pits in \" + msg.payload.content + \"...\";\n}\nelse {\n    msg.payload.content = \"Please select a noise level tier to check:\";\n}\nmsg.payload.options = opts;\n\nreturn [ msg ];\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 400,
+        "y": 480,
+        "wires": [
+            [
+                "f8382159.354bd"
+            ]
+        ]
+    },
+    {
+        "id": "c449ecde.754e4",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Send pit list",
+        "func": "if (msg.payload.content === 'Tier 3') {\n    msg.payload.content = \"There are currently no BBQ pits with noise levels at Tier 3. :)\";\n} else if (msg.payload.content === 'Tier 2') {\n    msg.payload.content = \"BBQ pits currently at Tier 2: 101, 206, 305\";\n} else if (msg.payload.content === 'Tier 1') {\n    msg.payload.content = \"BBQ pits currently at Tier 1: 103, 107, 285, 301, 323, 350\";\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 470,
+        "y": 520,
+        "wires": [
+            [
+                "f8382159.354bd"
+            ]
+        ]
+    },
+    {
+        "id": "b8bd52d3.88127",
+        "type": "delay",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 320,
+        "y": 520,
+        "wires": [
+            [
+                "c449ecde.754e4"
+            ]
+        ]
+    },
+    {
+        "id": "c466ed76.3f86a",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Send tier 3 pit details",
+        "func": "let location = msg.payload.location;\nif (msg.payload.action === \"guard\") {\n    msg.payload = {\n        chatId: flow.get(\"chat\"),\n        type: \"message\",\n        content: location + \" has exceeded threshold at tier 3. Please visit and take necessary action.\"\n    };\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 360,
+        "y": 380,
+        "wires": [
+            [
+                "f8382159.354bd"
+            ]
+        ]
+    },
+    {
+        "id": "6c14d73c.1c1cc8",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Send tier 3 pit location",
+        "func": "let location = msg.payload.location;\nif (msg.payload.action === \"guard\") {\n    msg.payload = {\n        chatId: flow.get(\"chat\"),\n        type: \"location\",\n        content: {\n            latitude: 1.2948548,\n            longitude: 103.84985\n        }\n    };\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 360,
+        "y": 420,
+        "wires": [
+            [
+                "f8382159.354bd"
+            ]
+        ]
+    },
+    {
+        "id": "b893b431.348118",
+        "type": "http request",
+        "z": "6f42e3c6.0f795c",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 810,
+        "y": 240,
+        "wires": [
+            [
+                "4451328.9abf4cc"
+            ]
+        ]
+    },
+    {
+        "id": "48729707.b21308",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Get last 3 readings of location",
+        "func": "var currLocation = msg.payload.location;\nmsg = {};\nmsg.url = \"https://is439g4.firebaseio.com/noise_realtime.json?orderBy=%22location%22&equalTo=%22\" + currLocation + \"%22&limitToLast=3\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 240,
+        "wires": [
+            [
+                "b893b431.348118"
+            ]
+        ]
+    },
+    {
+        "id": "4451328.9abf4cc",
+        "type": "function",
+        "z": "6f42e3c6.0f795c",
+        "name": "Check noise against threshold",
+        "func": "var moment = global.get('momentModule');\narr = Object.values(msg.payload);\n\narr.sort(function(a, b){\n    let timestampA = new Date(a.timestamp),\n        timestampB = new Date(b.timestamp);\n    // Compare the 2 dates\n    if(timestampA < timestampB) return -1;\n    if(timestampA > timestampB) return 1;\n    return 0;\n});\n\nmsg.payload = \"\";\n\n//Check timestamp range\nlet lastReading = arr.slice(-1)[0];\nlet timestamp = lastReading.timestamp;\nlet d = moment(timestamp, \"dd-MM-yyyy HH:mm:ss\");\nlet time = d.format(\"HH:mm:ss\")\n\n//Obtain threshold for timestamp range\nlet threshold = 0;\nif (time < \"06:00:00\") {\n    threshold = flow.get(\"midnight\");\n}\nelse if (time < \"12:00:00\") {\n    threshold = flow.get(\"morning\");\n}\nelse if (time < \"18:00:00\") {\n    threshold = flow.get(\"afternoon\");\n}\nelse if (time <= \"23:59:59\") {\n    threshold = flow.get(\"evening\");\n}\nnode.warn(threshold);\n\nlet tier = 0;\n\nfor(let i=0; i<arr.length; i++) {\n    if (arr[i].noise > threshold) {\n        tier++;\n    } else {\n        tier = 0;\n    }\n}\n\nswitch (tier) {\n    case 1:\n        msg.payload = {\n            location: lastReading.location,\n            action: \"light\"\n        }\n        break;\n    case 2:\n        msg.payload = {\n            location: lastReading.location,\n            action: \"lightSound\"\n        }\n        break;\n    case 3:\n        msg.payload = {\n            location: lastReading.location,\n            action: \"guard\"\n        }\n        break;\n    default:\n        break;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 320,
+        "wires": [
+            [
+                "8a22d6cb.5c3f08"
+            ]
+        ]
+    },
+    {
+        "id": "e1ddbcdf.35314",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "broker.mqttdashboard.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "88eb0768.e5a8c8",
+        "type": "firebase admin",
+        "z": "",
+        "name": ""
+    },
+    {
+        "id": "288044f2.b261fc",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "broker.mqttdashboard.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "c0b3a7bd.c980c8",
+        "type": "telegram bot",
+        "z": "",
+        "botname": "D'Resort Noise Bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "pollinterval": "300"
+    }
+]

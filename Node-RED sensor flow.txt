@@ -1,0 +1,197 @@
+[
+    {
+        "id": "28628a34.d56d36",
+        "type": "tab",
+        "label": "Sensor",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "8ab1113f.876c8",
+        "type": "inject",
+        "z": "28628a34.d56d36",
+        "name": "Run every 5 minutes",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "300",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "300",
+        "x": 200,
+        "y": 180,
+        "wires": [
+            [
+                "8cd07634.7e6b28"
+            ]
+        ]
+    },
+    {
+        "id": "3a8be51d.fd784a",
+        "type": "function",
+        "z": "28628a34.d56d36",
+        "name": "Reset variables",
+        "func": "//Total Noise Level, reset every 5 mins/300 seconds\nflow.set(\"total_noise\", 0);\nnode.warn(flow.get(\"total_noise\"));\n//Counter for noise indicators\nflow.set(\"count\", 0);\nnode.warn(flow.get(\"count\"));",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 800,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "30e53f06.0c37e",
+        "type": "inject",
+        "z": "28628a34.d56d36",
+        "name": "Initialise Context Var",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0",
+        "x": 200,
+        "y": 80,
+        "wires": [
+            [
+                "cd784b8c.870f18"
+            ]
+        ]
+    },
+    {
+        "id": "cd784b8c.870f18",
+        "type": "function",
+        "z": "28628a34.d56d36",
+        "name": "Initiate Flow Variables",
+        "func": "//Total Noise Level, reset every 5 mins/300 seconds\nflow.set(\"total_noise\", 0);\n\n//Counter for noise indicators\nflow.set(\"count\", 0);\n\n//Flow Location\nflow.set(\"location\", \"L1BoxingRing\");",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 480,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7d16f23c.71a60c",
+        "type": "grove analog sensor",
+        "z": "28628a34.d56d36",
+        "name": "Sound",
+        "pin": "0",
+        "sensor": "sound",
+        "repeat": "0.01",
+        "board": "52df19f2.eb0718",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "45db04c9.7077cc"
+            ]
+        ]
+    },
+    {
+        "id": "45db04c9.7077cc",
+        "type": "function",
+        "z": "28628a34.d56d36",
+        "name": "Process Noise Input",
+        "func": "let total_noise  = flow.get(\"total_noise\");\nlet count = flow.get(\"count\");\n\n//Get input from noise sensor\nlet noise_input = msg.payload;\n\n//Add to count\ncount += 1.0;\n\n//Add noise to total noise\ntotal_noise += noise_input;\n\n//Update flow variables\nflow.set(\"total_noise\", total_noise);\nflow.set(\"count\", count);",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f13aca44.501298",
+        "type": "mqtt out",
+        "z": "28628a34.d56d36",
+        "name": "",
+        "topic": "is439/4/noise",
+        "qos": "",
+        "retain": "",
+        "broker": "90be4a5b.b31168",
+        "x": 810,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "8cd07634.7e6b28",
+        "type": "function",
+        "z": "28628a34.d56d36",
+        "name": "Send noise data (averaged)",
+        "func": "let total_noise  = flow.get(\"total_noise\");\nlet count = flow.get(\"count\");\nlet location = flow.get(\"location\");\n\n//Get average noise level over 5 min\nlet avg_noise = total_noise/count;\n\n//Create current timestamp\nlet d = new Date();\n\n//convert to GMT\nd.setHours(d.getHours() + 8);\n\n//Format \nlet timestamp = (\"0\" + d.getDate()).slice(-2) + \"-\" + (\"0\"+(d.getMonth()+1)).slice(-2) + \"-\" +\nd.getFullYear() + \" \" + (\"0\" + d.getHours()).slice(-2) + \":\" + (\"0\" + d.getMinutes()).slice(-2) + \":\" + (\"0\" + d.getSeconds()).slice(-2);\n\nmsg.payload = {\n    noise: avg_noise,\n    timestamp: timestamp,\n    location: location\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 180,
+        "wires": [
+            [
+                "1c9bb04a.b356f"
+            ]
+        ]
+    },
+    {
+        "id": "f1f0332e.567ec",
+        "type": "debug",
+        "z": "28628a34.d56d36",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 810,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "1c9bb04a.b356f",
+        "type": "function",
+        "z": "28628a34.d56d36",
+        "name": "Send noise data for real-time chart",
+        "func": "//Create current timestamp\nlet d = new Date();\n\n//convert to GMT\nd.setHours(d.getHours() + 8);\n\n//Format \nlet timestamp = d.getFullYear() + \"-\" + (\"0\"+(d.getMonth()+1)).slice(-2) + \"-\" + (\"0\" + d.getDate()).slice(-2) + \" \" + (\"0\" + d.getHours()).slice(-2) + \":\" + (\"0\" + d.getMinutes()).slice(-2) + \":\" + (\"0\" + d.getSeconds()).slice(-2);\n\nmsg.payload.timestamp = timestamp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 240,
+        "wires": [
+            [
+                "3a8be51d.fd784a",
+                "f13aca44.501298",
+                "f1f0332e.567ec"
+            ]
+        ]
+    },
+    {
+        "id": "52df19f2.eb0718",
+        "type": "board-config",
+        "z": "",
+        "board": "GrovePi"
+    },
+    {
+        "id": "90be4a5b.b31168",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "broker.mqttdashboard.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]

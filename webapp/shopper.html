@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v2.1.6
+* @link https://coreui.io
+* Copyright (c) 2018 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+
+<html lang="en">
+  <head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="author" content="Łukasz Holeczek">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>Floorplan for Shopper</title>
+    <!-- Icons-->
+    <link href="node_modules/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">
+    <link href="node_modules/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+    <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="node_modules/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+    
+    <!-- Main styles for this application-->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/icon.css" rel="stylesheet">
+    <link href="vendors/pace-progress/css/pace.min.css" rel="stylesheet">
+    <!-- Jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics-->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      // Shared ID
+      gtag('config', 'UA-118965717-3');
+      // Bootstrap ID
+      gtag('config', 'UA-118965717-5');
+    </script>
+    <script type="text/javascript">
+	function clickStatus() {
+		var x = document.getElementById("status");
+		var y = document.getElementById("toilets");
+	    x.style.display = "block";
+	    document.getElementById("statusLink").className = "nav-link active";
+	    document.getElementById("toiletsLink").className = "nav-link";
+	    y.style.display = "none";
+	}
+	
+	function clickToilet() {
+		var x = document.getElementById("status");
+		var y = document.getElementById("toilets");
+	    y.style.display = "block";
+	    document.getElementById("statusLink").className = "nav-link";
+	    document.getElementById("toiletsLink").className = "nav-link active";
+	    x.style.display = "none";
+	}
+	</script>
+  </head>
+  <body class="app header-fixed " onload=clickToilet()>
+    <header class="app-header navbar">
+        <a class="navbar-brand" href="#">
+            <img class="navbar-brand-full" src="img/brand/toiletLogo.jpg" height="50" alt="CoreUI Logo">
+            <img class="navbar-brand-minimized" src="img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
+        </a>
+    </header>
+    <div class="app-body">
+    	<main class="main">
+            <!-- /.row-->
+            <div class="card">
+        		<div class="card-body">
+            		<div align="left" class="row">
+            			<div class="col col-lg-12" align="left">
+                			<div class="card">
+			                  <div class="card-header">
+			                    <h3 class="fa fa-align-justify text-center">Plaza Singapura Toilet Dashboard</h3>
+			                  </div>
+							  <div class="card-body">
+								<img src="img/toilet/malered.png" class="male-dynamic" style="height:40px" onClick="clickStatus()">
+								<img id="femalegreen" src="img/toilet/femalegreen.png" class="female-dynamic" style="height:40px" onClick="clickStatus()">
+							  	<img id="femaleyellow" src="img/toilet/femaleyellow.png" class="female-dynamic" style="height:40px" onClick="clickStatus()">
+								<img id="femalered" src="img/toilet/femalered.png" class="female-dynamic" style="height:40px" onClick="clickStatus()">
+								
+								<img src="img/toilet/maleyellow.png" class="male-1" style="height:40px" onClick="clickStatus()">
+								<img src="img/toilet/malegreen.png" class="male-2" style="height:40px" onClick="clickStatus()">
+								<img src="img/toilet/femaleyellow.png" class="female-1" style="height:40px" onClick="clickStatus()">
+							  	<img src="img/toilet/femalegreen.png" class="female-2" style="height:40px" onClick="clickStatus()">
+							  	<img class="center" src="img/nicer.png" style="width:50%; float:left; padding-top:50px;" style="height:40px">
+								<div class="card-body" style="padding-left:780px">
+										<ul class="nav nav-tabs">
+					                        <li class="nav-item active">
+					                          <a id="statusLink" class="nav-link" data-toggle="tab" onClick="clickStatus()"><b>Current Toilet Status</b></a> 
+					                        </li>
+					                        <li class="nav-item">
+					                          <a id="toiletsLink" class="nav-link" data-toggle="tab" onClick="clickToilet()"><b>Other Available Toilets</b></a>
+					                        </li>
+				                        </ul>
+					                      <div class="tab-content">
+			                      			<div id="status" name="status" role="tabpanel">
+		                      					<div class="col-lg-12">
+		                      						<div class="row">
+						                      			<div id="toggleSwitch" class="col tab-pane col-lg-6"></div>
+						                      			<div class="col-lg-6" style="padding-top:50px;font-size:24pt;text-align:center">Number of People in Queue: <div id="queue"></div></div>
+				                      				</div>
+				                      				
+				                      			</div>
+				                      		</div>
+					                      	<div id="toilets" name="toilets" role="tabpanel" class="tab-pane">
+						                      	<table class="table table-responsive-sm table-striped">
+								                    <thead>
+								                      <tr>
+								                        <th>Toilet</th>
+								                        <th>Number of Available Cubicles</th>
+								                        <th>Number of People Queuing</th>
+								                        <th>Status</th>
+								                      </tr>
+								                    </thead>
+								                    <tbody id="toiletData"></tbody>
+								                  </table>
+							                  </div>
+					                      </div>
+						              </div>
+			                  </div>
+            				</div>
+						</div>
+					</div>
+				</div>
+			</div>
+      </main>
+    </div>
+
+    <!-- CoreUI and necessary plugins-->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/pace-progress/pace.min.js"></script>
+    <script src="node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+    <script src="node_modules/@coreui/coreui/dist/js/coreui.min.js"></script>
+    <!-- Plugins and scripts required by this view-->
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="node_modules/@coreui/coreui-plugin-chartjs-custom-tooltips/dist/js/custom-tooltips.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/shopper.js"></script>
+    <script src="js/toggleContent.js"></script>
+  </body>
+</html>
